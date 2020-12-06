@@ -9,10 +9,14 @@ DB = "shopping.db"
 
 
 def login():
-    while True:
-        logged_in = False
-        username = input("Please enter a username: ")
-        password = input("Please enter your password: ")
+    print("You can press q to return to login/register functionality.\n")
+    logged_in = False
+    while not logged_in:
+        username = input("[Login] Please enter a username: ")
+        if username.lower() == "q":
+            print("")
+            return logged_in
+        password = input("[Login] Please enter your password: ")
         with sqlite3.connect("shopping.db") as db:
             cursor = db.cursor()
         user = cursor.execute("SELECT * from user WHERE name = ?", (username,)).fetchone()
@@ -24,17 +28,29 @@ def login():
             logged_in = True
 
         if logged_in:
-            print("Logged in!")
+            print("[Login] Logged in!\n")
+            return username
 
 
 def register():
+    print("You can press q to return to login/register functionality.\n")
+    registered = False
     connection = connect_db(DB)
     cursor = connection.cursor()
-    username = input("Please enter a username: ")
-    password = input("Please enter your password: ")
-    cursor.execute("SELECT * FROM user WHERE name=?",(username,))
-    row = cursor.fetchone()
-    if row is None:
-        insert_into_user_table(username, password)
-    else:
-        print(f"{username} already exists in the database!")
+
+    while not registered:
+        username = input("[Register] Please enter a username: ")
+        if username.lower() == "q":
+            print("")
+            return registered
+        cursor.execute("SELECT * FROM user WHERE name=?",(username,))
+        row = cursor.fetchone()
+        if row is None:
+            password = input("[Register] Please enter your password: ")
+            insert_into_user_table(username, password)
+            print(f"[Register] {username} successfully registered!")
+            registered = True
+            return registered
+        else:
+            print(f"{username} already exists in the database!\n")
+
