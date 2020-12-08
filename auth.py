@@ -47,10 +47,13 @@ def register():
         row = cursor.fetchone()
         if row is None:
             password = input("[Register] Please enter your password: ")
-            insert_into_user_table(username, password)
-            print(f"[Register] {username} successfully registered!")
-            registered = True
-            return registered
+            if password.isalnum():
+                insert_into_user_table(username, password)
+                print(f"[Register] {username} successfully registered!")
+                registered = True
+                return registered
+            else:
+                print("There were invalid characters in your password...")
         else:
             print(f"{username} already exists in the database!\n")
 

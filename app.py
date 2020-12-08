@@ -1,12 +1,11 @@
 # application to track shoppings
 # author: felixele217
-# TODO added databases and insertions for user item and shopping. now need to add the functionality for
-# TODO the several inputs in the menu
+# TODO implement functionality for the item menu
 
 import sys
 from auth import register, login
 from db import create_user_table
-from item import items
+import item
 
 
 def start():
@@ -14,13 +13,13 @@ def start():
     logged_in = False
     username = None
     while True:
-        l_or_r = input("Press l to login or r to register and q to quit: ")
+        user_action = input("Press l to login or r to register and q to quit: ")
         print("")
-        if l_or_r.lower() == "l":
+        if user_action.lower() == "l":
             username = login()
-        elif l_or_r.lower() == "r":
+        elif user_action.lower() == "r":
             register()
-        elif l_or_r.lower() == "q":
+        elif user_action.lower() == "q":
             sys.exit()
         else:
             print("Wrong input! Try again...")
@@ -45,7 +44,7 @@ def display_menu(user):
     user_input = input("Please enter the option you want to use: ")
     while True:
         if user_input.lower() == "i":
-            items(user)
+            item.items(user)
         if user_input.lower() == "s":
             # shoppings()
             return
